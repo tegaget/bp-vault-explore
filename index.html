@@ -85,7 +85,8 @@ function sortData(property) {
 
 // Load JSON data from file
 function loadJSON() {
-  fetch('bitcoin_punks_dump.json')
+  const url = 'bitcoin_punks_dump.json' + '?_=' + Date.now();
+  fetch(url)
     .then(response => response.json())
     .then(data => {
       jsonData = data;
