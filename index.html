@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>BP Vaulted Viewer</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .heading-wrapper {
+      display: flex;
+      align-items: center;
+    }
+    .heading-wrapper img {
+      margin-right: 10px;
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: rgb(247, 147, 26);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="heading-wrapper">
+    <img alt="Collection Page Image" loading="lazy" decoding="async" data-nimg="1" class="PJLV PJLV-iivxgGG-css" style="color: transparent;" srcset="https://ord.ordinals.market/content/c43b26851e509d46a91223a01b6e22ec21a9d31432e02d571ebfa918f4048c0ci0 1x, https://ord.ordinals.market/content/c43b26851e509d46a91223a01b6e22ec21a9d31432e02d571ebfa918f4048c0ci0 2x" src="https://ord.ordinals.market/content/c43b26851e509d46a91223a01b6e22ec21a9d31432e02d571ebfa918f4048c0ci0">
+    <h1>Bitcoin Punk Vault Viewer</h1>
+  </div>
+
+  <select id="sort-select">
+    <option value="">Sort by...</option>
+    <option value="BP_num">BP Number</option>
+    <option value="owner_address">Owner Address</option>
+  </select>
+  
+  <table id="json-table">
+    <thead>
+      <tr>
+        <th>BP Number</th>
+        <th>Owner Address</th>
+      </tr>
+    </thead>
+    <tbody id="json-data">
+    </tbody>
+  </table>
+</body>
+</html>
+
+  <script>
+
+// Sort JSON data by selected property
+function sortData(property) {
+  if (property === "") {
+    displayData(jsonData);
+  } else {
+    let sortedData = jsonData.slice();
+
+    if (property === "owner_address") {
+      sortedData.sort((a, b) => {
+        const aCount = sortedData.filter(item => item.owner_address === a.owner_address).length;
+        const bCount = sortedData.filter(item => item.owner_address === b.owner_address).length;
+        return bCount - aCount;
+      });
+    } else {
+      sortedData.sort((a, b) => {
+        if (a[property] < b[property]) return -1;
+        if (a[property] > b[property]) return 1;
+        return 0;
+      });
+    }
+
+    displayData(sortedData);
+  }
+}
+
+// Load JSON data from file
+function loadJSON() {
+  fetch('bitcoin_punks_dump.json')
+    .then(response => response.json())
+    .then(data => {
+      jsonData = data;
+      sortData("BP_num"); // Sort by BP_num by default
+    })
+    .catch(error => console.error('Error loading JSON:', error));
+}
+
+// Display JSON data
+function displayData(data) {
+  const tableBody = document.getElementById("json-data");
+  tableBody.innerHTML = "";
+
+  data.forEach(item => {
+    const row = document.createElement("tr");
+    const bpNumCell = document.createElement("td");
+    const bpNumLink = document.createElement("a");
+    bpNumLink.textContent = item.BP_num;
+    bpNumLink.href = "https://emblem.finance/nft?id=" + encodeURIComponent(item.token_id);
+    bpNumLink.target = "_blank";
+    bpNumCell.appendChild(bpNumLink);
+
+    const ownerAddressCell = document.createElement("td");
+    const ownerAddressLink = document.createElement("a");
+    ownerAddressLink.textContent = item.owner_address;
+    ownerAddressLink.href = "https://ordinals.market/profile/" + encodeURIComponent(item.owner_address);
+    ownerAddressLink.target = "_blank";
+    ownerAddressCell.appendChild(ownerAddressLink);
+
+    row.appendChild(bpNumCell);
+    row.appendChild(ownerAddressCell);
+    tableBody.appendChild(row);
+  });
+}
+
+// Event listener for sorting
+const sortSelect = document.getElementById("sort-select");
+sortSelect.addEventListener("change", event => {
+  const selectedProperty = event.target.value;
+  sortData(selectedProperty);
+});
+
+// Initial display of JSON data
+let jsonData;
+loadJSON();
+
+// Set default sort option
+sortSelect.value = "BP_num";
+
+  </script>
+</body>
+</html>
