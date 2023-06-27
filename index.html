@@ -65,19 +65,24 @@ function sortData(property) {
   } else {
     let sortedData = jsonData.slice();
 
-    if (property === "owner_address") {
-      sortedData.sort((a, b) => {
+    sortedData.sort((a, b) => {
+      if (property === "owner_address") {
         const aCount = sortedData.filter(item => item.owner_address === a.owner_address).length;
         const bCount = sortedData.filter(item => item.owner_address === b.owner_address).length;
-        return bCount - aCount;
-      });
-    } else {
-      sortedData.sort((a, b) => {
+
+        if (aCount !== bCount) {
+          return bCount - aCount; // Sort by count in decreasing order
+        } else {
+          if (a.owner_address < b.owner_address) return -1; // Sort alphabetically
+          if (a.owner_address > b.owner_address) return 1;
+          return a.BP_num - b.BP_num; // Sort by BP_num if addresses are the same
+        }
+      } else {
         if (a[property] < b[property]) return -1;
         if (a[property] > b[property]) return 1;
         return 0;
-      });
-    }
+      }
+    });
 
     displayData(sortedData);
   }
