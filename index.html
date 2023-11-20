@@ -117,8 +117,8 @@ function displayData(data) {
     const ownerAddressCell = document.createElement("td");
     const ownerAddressLink = document.createElement("a");
     ownerAddressLink.textContent = item.owner_address;
-    ownerAddressLink.href = "https://ordinals.market/profile/" + encodeURIComponent(item.owner_address);
-    // ownerAddressLink.href = "https://opensea.io/assets/ethereum/" + encodeURIComponent(item.owner_address) + "/" + ncodeURIComponent(item.token_id);
+    // ownerAddressLink.href = "https://ordinals.market/profile/" + encodeURIComponent(item.owner_address);
+    ownerAddressLink.href = "https://opensea.io/assets/ethereum/" + encodeURIComponent(item.owner_address);
     ownerAddressLink.target = "_blank";
     ownerAddressCell.appendChild(ownerAddressLink);
 
