@@ -118,7 +118,8 @@ function displayData(data) {
     const ownerAddressLink = document.createElement("a");
     ownerAddressLink.textContent = item.owner_address;
     // ownerAddressLink.href = "https://ordinals.market/profile/" + encodeURIComponent(item.owner_address);
-    ownerAddressLink.href = "https://opensea.io/" + encodeURIComponent(item.owner_address);
+    // ownerAddressLink.href = "https://opensea.io/" + encodeURIComponent(item.owner_address);
+    ownerAddressLink.href = "https://www.okx.com/web3/marketplace/nft/asset/eth/0x82c7a8f707110f5fbb16184a5933e9f78a34c6ab/" + encodeURIComponent(item.token_id);
     ownerAddressLink.target = "_blank";
     ownerAddressCell.appendChild(ownerAddressLink);
 
